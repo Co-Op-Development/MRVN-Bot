@@ -1,0 +1,4 @@
+#Ignore Node Dependencies folder for faster deploy and update
+/node_modules/
+#Ignore ENV Variables For security Improvement
+.env
