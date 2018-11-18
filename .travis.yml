@@ -1,0 +1,33 @@
+language: node_js
+node_js:
+- 8.12.0
+os:
+- linux
+sudo: required
+before_install:
+- sudo apt-get install dos2unix
+install:
+- dos2unix ./test/test.sh
+- dos2unix ./test/send.sh
+- dos2unix ./build.sh
+- npm install -g eslint --save
+- npm install
+jobs:
+  include:
+  - stage: test
+  - script: bash ./test/test.sh
+branches:
+  only:
+  - master
+  - deployment
+  - development
+  - /^dev.*$/
+cache:
+  directories:
+  - node_modules
+after_success:
+- chmod +x ./test/send.sh
+- "./test/send.sh success $WEBHOOK_URL"
+after_failure:
+- chmod +x ./test/send.sh
+- "./test/send.sh failure $WEBHOOK_URL"
